@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logo Movement</title>
+    <style>
+        body {
+            background-image: url('./assets/background.jpg');
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: black;
+        }
+
+        #logo {
+            position: absolute;
+            cursor: pointer;
+            width: 7vw;
+            transition: transform 1s ease; /* Removed left and top transition */
+        }
+    </style>
+</head>
+
+<body>
+    <img id="logo" src="./assets/logo.png" alt="Logo">
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const logo = document.getElementById('logo');
+            const logoWidth = logo.offsetWidth;
+            const logoHeight = logo.offsetHeight;
+
+            // Flip the logo horizontally based on cursor position
+            function flipLogo(event) {
+                const clickX = event.clientX;
+                const logoX = logo.offsetLeft;
+
+                logo.style.transform = clickX > logoX + logoWidth / 2 ? 'scaleX(-1)' : 'scaleX(1)';
+            }
+
+            // Add click event listener to flip logo horizontally
+            document.addEventListener('click', flipLogo);
+        });
+    </script>
+</body>
+
+</html>

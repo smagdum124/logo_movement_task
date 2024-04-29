@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logo Movement</title>
+    <style>
+        body {
+            background-image: url('./assets/background.jpg');
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: black;
+        }
+
+        #logo {
+            position: absolute;
+            cursor: pointer;
+            width: 7vw;
+            transition: transform 10s ease;
+        }
+    </style>
+</head>
+
+<body>
+    <img id="logo" src="./assets/logo.png" alt="Logo">
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const logo = document.getElementById('logo');
+            const logoWidth = logo.offsetWidth;
+            const logoHeight = logo.offsetHeight;
+            const screenWidth = window.innerWidth;
+            const screenHeight = window.innerHeight;
+            let prevClickX = 0; // Variable to store the previous clickX value
+
+            // Function to move the logo towards click position with smooth medium speed
+            function moveLogo(event) {
+                const clickX = event.clientX;
+                const clickY = event.clientY;
+                const logoX = logo.offsetLeft;
+                const logoY = logo.offsetTop;
+
+                // Check if the click is on the right side of the logo
+                const clickedOnRightSide = prevClickX < clickX;
+                // console.log("speed=>",clickedOnRightSide)
+
+                // Flip the logo horizontally if clicked on the right side, otherwise flip it to the left
+                const flipDirection = clickedOnRightSide ? 'scaleX(-1)' : 'scaleX(1)';
+
+                const steps = 10; // Number of steps for smoother movement
+
+                // Calculate step sizes
+                const stepX = (clickX - (logoX + logoWidth / 2)) / steps;
+                const stepY = (clickY - (logoY + logoHeight / 2)) / steps;
+
+                // Smoothly update logo position
+                let newX = logoX + (stepX * steps);
+                let newY = logoY + (stepY * steps);
+
+                // Ensure logo remains within the screen boundaries
+                newX = Math.max(0, Math.min(screenWidth - logoWidth, newX));
+                newY = Math.max(0, Math.min(screenHeight - logoHeight, newY));
+
+                // Set the new logo position with the flip
+                logo.style.transform = `translate(${newX}px, ${newY}px) ${flipDirection}`;
+
+                prevClickX = clickX; // Update prevClickX with current clickX value
+            }
+
+            // Add click event listener to move logo towards click position
+            document.addEventListener('click', moveLogo);
+        });
+    </script>
+</body>
+
+</html>
